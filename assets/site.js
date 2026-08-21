@@ -8,6 +8,9 @@
 
   var doc  = document;
   var root = doc.documentElement;
+  /* Kept in sync by hand with the inline font-preload script in every <head>.
+     If this key or the 'ka' sniff changes, change it there too, or a Georgian
+     visitor loses the preload and waits on the swap. */
   var STORE_KEY = 'londre-lang';
   var LANGS = ['en', 'ka'];
 
@@ -115,12 +118,42 @@
     onScroll();
   }
 
-  /* ---------------------------------------------------------- scroll reveal */
+  /* ------------------------------------------------------------------ motion */
 
   var reduced = window.matchMedia &&
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasIO   = 'IntersectionObserver' in window;
 
-  if (!reduced && 'IntersectionObserver' in window) {
+  /* One observer serves both the reveals and the status panel. Each target
+     carries its own callback, so there is a single scroll-driven code path. */
+  var io = null;
+  if (hasIO) {
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        var queue = entry.target._onEnter || [];
+        queue.forEach(function (fn) { fn(entry.target); });
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  }
+
+  /* An element can be registered more than once — the hero status panel is both
+     a reveal target and an animation target — so callbacks stack rather than
+     replace, and the element is only observed the first time round. */
+  function watch(el, fn) {
+    if (!io) return;
+    if (el._onEnter) { el._onEnter.push(fn); return; }
+    el._onEnter = [fn];
+    io.observe(el);
+  }
+
+  /* --- scroll reveal -------------------------------------------------------
+     The stagger lives in CSS as transition-delay: calc(var(--i) * 70ms). JS
+     only marks position, so the sequencing is the browser's job, not a pile
+     of timers. .reveal is added here so no-JS visitors never see opacity: 0. */
+
+  if (!reduced && hasIO) {
     var groups = [
       '.hero-grid > *',
       '.section-head',
@@ -132,33 +165,113 @@
     ];
 
     var seen = new Set();
-    var targets = [];
 
     groups.forEach(function (selector) {
       doc.querySelectorAll(selector).forEach(function (el) {
         if (seen.has(el)) return;
         seen.add(el);
-        targets.push(el);
+
+        var siblings = el.parentElement
+          ? Array.prototype.slice.call(el.parentElement.children)
+          : [];
+        var index = siblings.indexOf(el);
+        el.style.setProperty('--i', String(Math.min(index < 0 ? 0 : index, 5)));
+        el.classList.add('reveal');
+
+        watch(el, function (node) { node.classList.add('in'); });
       });
     });
+  }
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        // stagger siblings so a row of cards arrives in sequence
-        var delay = Number(el.dataset.revealIndex || 0) * 70;
-        setTimeout(function () { el.classList.add('in'); }, delay);
-        io.unobserve(el);
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  /* --- status panel: play the order through once ---------------------------
+     Marking .anim is what arms the CSS; the panel's resting state is the
+     finished one, so without JS it simply reads as a completed timeline. */
 
-    targets.forEach(function (el) {
-      var siblings = el.parentElement ? Array.prototype.slice.call(el.parentElement.children) : [];
-      var index = siblings.indexOf(el);
-      el.dataset.revealIndex = String(Math.min(index < 0 ? 0 : index, 5));
-      el.classList.add('reveal');
-      io.observe(el);
+  var panel = doc.querySelector('.status-panel');
+  if (panel && !reduced && hasIO) {
+    var rows = panel.querySelectorAll('.status-list li');
+    Array.prototype.forEach.call(rows, function (li, i) {
+      li.style.setProperty('--i', String(i));
     });
+    panel.classList.add('anim');
+    watch(panel, function (node) { node.classList.add('ran'); });
+  }
+
+  /* --- card hover sheen ----------------------------------------------------
+     One delegated listener for every card on the page, coalesced into an
+     animation frame. Skipped on coarse pointers, where hover does not exist. */
+
+  var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (fine && !reduced) {
+    var card = null, px = 0, py = 0, queued = false;
+
+    doc.addEventListener('pointermove', function (e) {
+      var hit = e.target.closest && e.target.closest('.card');
+      if (!hit) return;
+      card = hit; px = e.clientX; py = e.clientY;
+
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(function () {
+        queued = false;
+        if (!card) return;
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', ((px - r.left) / r.width  * 100) + '%');
+        card.style.setProperty('--my', ((py - r.top)  / r.height * 100) + '%');
+      });
+    }, { passive: true });
+  }
+
+  /* --- nav sliding marker --------------------------------------------------
+     Desktop only: below 901px the nav is a stacked drop-down where a sliding
+     pill would mean nothing. Writes three custom properties; CSS animates. */
+
+  var navLinks = doc.querySelector('.nav-links');
+  if (navLinks && !reduced && window.matchMedia) {
+    var wide = window.matchMedia('(min-width: 901px)');
+
+    var moveTo = function (link) {
+      if (!link) {
+        navLinks.style.setProperty('--marker-o', '0');
+        return;
+      }
+      var a = link.getBoundingClientRect();
+      var b = navLinks.getBoundingClientRect();
+      navLinks.style.setProperty('--marker-x', (a.left - b.left) + 'px');
+      navLinks.style.setProperty('--marker-w', a.width + 'px');
+      navLinks.style.setProperty('--marker-o', '1');
+    };
+
+    var current = function () { return navLinks.querySelector('a[aria-current="page"]'); };
+    var rest = function () { moveTo(current()); };
+
+    var enable = function () {
+      if (!wide.matches) {
+        navLinks.classList.remove('has-marker');
+        navLinks.style.setProperty('--marker-o', '0');
+        return;
+      }
+      navLinks.classList.add('has-marker');
+      rest();
+    };
+
+    navLinks.addEventListener('pointerover', function (e) {
+      if (!wide.matches) return;
+      var a = e.target.closest && e.target.closest('a');
+      if (a) moveTo(a);
+    });
+    navLinks.addEventListener('pointerleave', function () {
+      if (wide.matches) rest();
+    });
+
+    if (wide.addEventListener) wide.addEventListener('change', enable);
+    window.addEventListener('resize', enable);
+
+    /* Wait for the webfont before measuring — link widths shift when FiraGO
+       replaces the fallback, and a marker sized against the wrong metrics
+       sits visibly off. */
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(enable);
+    else enable();
+    enable();
   }
 })();

@@ -4,7 +4,7 @@ Statik site. Build gerekmez, dosyaları olduğu gibi yükle.
 
 ```
 index.html      Ana sayfa
-about.html      Kompani / şirket
+about.html      Nasıl çalışır (platform, roller, doğrulama, kapsam)
 services.html   Hizmetler
 app.html        Mobil uygulama
 contact.html    İletişim + resmi rekvizitler
@@ -13,15 +13,20 @@ terms.html      Kullanım Şartları
 404.html        Hata sayfası
 robots.txt, sitemap.xml
 assets/         logo, favicon, styles.css, site.js
-build.py        İçerik kaynağı (EN+GE tek yerde) — sunucuya yüklemene gerek yok
+assets/fonts/   FiraGO woff2 (subset edilmiş, self-hosted)
+tools/          Font build script + OG görsel kaynağı — YÜKLEME
+_fontsrc/       Font build çalışma klasörü — YÜKLEME (gitignore'da)
 ```
+
+> Yükleme sırasında `tools/` ve `_fontsrc/` klasörlerini dahil etme. Site
+> tarafında hiçbir işe yaramazlar; sadece varlıkları yeniden üretmek için.
 
 ---
 
 ## 1. Yayına alma (en hızlısı: Cloudflare Pages)
 
 1. `dash.cloudflare.com` → Workers & Pages → Create → Pages → **Upload assets**
-2. Bu klasörü (build.py hariç) sürükle bırak
+2. Bu klasörü (`tools/` ve `_fontsrc/` hariç) sürükle bırak
 3. Deploy → geçici bir `*.pages.dev` adresi verir
 4. Custom domains → `londre.ge` ve `www.londre.ge` ekle
 5. DNS kayıtlarını Cloudflare gösterdiği gibi güncelle
@@ -69,19 +74,33 @@ Reddedilme sebebi tek şeydi: başvuruda verilen sitede yeterli içerik yoktu. B
 
 ## 4. İçerik güncelleme
 
-İki yol var:
-
-**A. Doğrudan HTML.** Her metin iki blok halinde:
+Doğrudan HTML üzerinden. Her metin iki blok halinde:
 ```html
 <div class="en">İngilizce</div><div class="ka">ქართული</div>
 ```
 Sadece ilgili bloğu düzenle. `html[lang]` seçicisi hangisinin görüneceğine karar veriyor.
 
-**B. build.py üzerinden (önerilen).** Metinler `t("English", "ქართული")` ve `blk(...)` çiftleri halinde tek yerde. Düzenle, sonra:
+> Eski sürümlerde bir `build.py` vardı; artık yok. Tek kaynak HTML dosyalarının
+> kendisi. İki dilden birini güncellerken diğerini de güncellemeyi unutma.
+
+### Yazı tipi hakkında
+
+Fontlar **self-hosted** (`assets/fonts/`), Google Fonts'a bağımlılık yok.
+FiraGO, Latin ve Gürcü alfabesini tek ailede taşıyor — dil değişince yazı
+karakteri değişmiyor. Dosyalar `unicode-range` ile ikiye bölünmüş: İngilizce
+ziyaretçi Gürcüce glifleri hiç indirmiyor.
+
+Yeni bir ağırlık gerekirse veya karakter seti genişlerse:
 ```bash
-python3 build.py
+./tools/build-fonts.sh
 ```
-Tüm HTML sayfaları yeniden üretilir.
+Script fontları indirir, subset eder, `assets/fonts/` içine yazar. Çıktıyı
+commit'le. Sadece `python3` gerekiyor; venv'i kendi kuruyor.
+
+> Metne FiraGO'da olmayan bir sembol eklersen (örn. bir ok veya ikon karakteri)
+> tarayıcı yedek fonta düşer ve tutarsız görünür. Böyle durumlarda ya karakteri
+> `tools/build-fonts.sh` içindeki `LATIN` aralığına ekle, ya da — ikonsa —
+> `styles.css`'teki `.nav-toggle` gibi CSS ile çiz.
 
 ---
 
@@ -92,10 +111,27 @@ Tüm HTML sayfaları yeniden üretilir.
 - Gerçek uygulama ekran görüntüleri (`app.html`)
 - Google Maps gömme (`contact.html`)
 
+OG görselini (`assets/og.png`) değiştirmen gerekirse kaynağı
+`tools/og-source.html` — düzenle, sonra 1200×630 headless screenshot al.
+
 ---
 
 ## Notlar
 
 - Gizlilik Politikası ve Kullanım Şartları, uygulamanın gerçekte topladığı verilere göre yazıldı (telefon/SMS OTP, konum, sipariş kayıtları, ödeme, sağlayıcı belgeleri). App Store başvurusunda gizlilik politikası zaten zorunlu — `https://londre.ge/privacy.html` adresini oraya verebilirsin.
 - İkisi de bir avukata okutulmalı; Gürcistan mevzuatına göre son hâlini vermek gerekir. Bu metinler taslak niteliğinde.
-- Yazı tipleri Google Fonts'tan yükleniyor. Tamamen self-hosted istersen fontları `assets/` altına indirip `@font-face` ile bağlayabilirsin.
+- Yazı tipleri self-hosted (FiraGO, SIL OFL). Google Fonts'a hiçbir istek gitmiyor — bu hem gizlilik hem hız açısından tercih edildi.
+
+### Yasal kimlik nerede duruyor (değiştirirken dikkat)
+
+Apple'ın doğrulaması sitede tüzel kişi adının görünmesine bağlı. Kimlik bilgisi
+bilinçli olarak **tek kanonik yerde** tutuluyor, sayfalara dağıtılmadı:
+
+| Yer | Ne var |
+|---|---|
+| Her sayfanın footer'ı | LONDRE AI LLC + tam adres |
+| `contact.html` künye tablosu | Tüzel kişi, hukuki form, yargı yetkisi, adres, e-posta |
+| Her sayfada JSON-LD `Organization` | Makine tarafından okunabilir aynı bilgi |
+
+Bu üçünü bozma. Başvuruda verdiğin şirket adı ve adres, `contact.html`'deki
+tablo ile birebir aynı olmalı — D-U-N-S kaydıyla da eşleşmeli.

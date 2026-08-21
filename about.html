@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Company — LONDRE AI LLC</title>
-<meta name="title-en" content="Company — LONDRE AI LLC">
-<meta name="title-ka" content="კომპანია — LONDRE AI LLC">
-<meta name="description" content="LONDRE AI LLC is a technology company registered in Batumi, Georgia, developing and operating the Londre on-demand automotive services platform.">
+<title>How it works — Londre</title>
+<meta name="title-en" content="How it works — Londre">
+<meta name="title-ka" content="როგორ მუშაობს — ლონდრე">
+<meta name="description" content="How the Londre platform works: one app with three roles — drivers who order, verified providers who fulfil, and an administration layer that approves accounts and oversees every order from request to receipt.">
 <meta name="author" content="LONDRE AI LLC">
 <link rel="canonical" href="https://londre.ge/about.html">
-<meta property="og:title" content="Company — LONDRE AI LLC">
-<meta property="og:description" content="LONDRE AI LLC is a technology company registered in Batumi, Georgia, developing and operating the Londre on-demand automotive services platform.">
+<meta property="og:title" content="How it works — Londre">
+<meta property="og:description" content="How the Londre platform works: one app with three roles — drivers who order, verified providers who fulfil, and an administration layer that approves accounts and oversees every order from request to receipt.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://londre.ge/about.html">
 <meta property="og:site_name" content="Londre">
@@ -22,9 +22,15 @@
 <meta name="theme-color" content="#16202A">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/firago-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/firago-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>/* Latin is needed in both languages (brand, e-mail, timestamps), so it is
+   preloaded flat. The Georgian slices are only worth fetching early for a
+   Georgian visitor. Storage key and language sniff must match assets/site.js. */
+try{var _l=localStorage.getItem('londre-lang')||((navigator.language||'').toLowerCase().indexOf('ka')===0?'ka':'en');
+if(_l==='ka'){['400','600'].forEach(function(w){var k=document.createElement('link');k.rel='preload';k.as='font';
+k.type='font/woff2';k.crossOrigin='anonymous';k.href='assets/fonts/firago-'+w+'-georgian.woff2';
+document.head.appendChild(k);});}}catch(e){}</script>
 <link rel="stylesheet" href="assets/styles.css">
 <script type="application/ld+json">
 {
@@ -51,12 +57,15 @@
 <header class="site-header">
   <div class="wrap nav">
     <a class="brand" href="index.html">
-      <img src="assets/logo.png" alt="Londre">
+      <picture>
+        <source srcset="assets/logo.webp" type="image/webp">
+        <img src="assets/logo.png" alt="Londre" width="115" height="36">
+      </picture>
     </a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">&#9776;</button>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu"><span></span></button>
     <nav class="nav-links" aria-label="Main">
         <a href="index.html"><span class="en">Home</span><span class="ka">მთავარი</span></a>
-        <a href="about.html" aria-current="page"><span class="en">Company</span><span class="ka">კომპანია</span></a>
+        <a href="about.html" aria-current="page"><span class="en">How it works</span><span class="ka">როგორ მუშაობს</span></a>
         <a href="services.html"><span class="en">Services</span><span class="ka">სერვისები</span></a>
         <a href="app.html"><span class="en">App</span><span class="ka">აპლიკაცია</span></a>
         <a href="contact.html"><span class="en">Contact</span><span class="ka">კონტაქტი</span></a>
@@ -71,9 +80,9 @@
 
 <section class="banner">
   <div class="wrap">
-    <p class="eyebrow"><span class="en">Company</span><span class="ka">კომპანია</span></p>
-    <h1><span class="en">LONDRE AI LLC</span><span class="ka">LONDRE AI LLC</span></h1>
-    <p><span class="en">A technology company based in Batumi, Georgia, building digital infrastructure for automotive services.</span><span class="ka">ტექნოლოგიური კომპანია ბათუმიდან, რომელიც ავტოსერვისებისთვის ციფრულ ინფრასტრუქტურას ქმნის.</span></p>
+    <p class="eyebrow"><span class="en">How it works</span><span class="ka">როგორ მუშაობს</span></p>
+    <h1><span class="en">One app, three roles, one shared record.</span><span class="ka">ერთი აპლიკაცია, სამი როლი, ერთი საერთო ჩანაწერი.</span></h1>
+    <p><span class="en">What Londre does, and how an order actually moves through the platform.</span><span class="ka">რას აკეთებს ლონდრე და როგორ მოძრაობს შეკვეთა პლატფორმაში.</span></p>
   </div>
 </section>
 
@@ -82,11 +91,11 @@
     <div class="grid grid-2" style="gap:56px; align-items:start;">
       <div>
         <h2><span class="en">What we do</span><span class="ka">რას ვაკეთებთ</span></h2>
-        <div class="en"><p>LONDRE AI LLC develops and operates Londre, a mobile platform for on-demand automotive services in Georgia. The company is registered in Batumi and works with local service businesses across the country.</p><p>Our product is a single application with three roles inside it: drivers who order services, verified providers who fulfil them, and an administration layer that approves accounts, resolves disputes and reports on activity. The platform handles ordering, dispatch, live tracking, payment and rating end to end.</p></div><div class="ka"><p>LONDRE AI LLC ქმნის და მართავს ლონდრეს — მობილურ პლატფორმას საქართველოში მოთხოვნისამებრ ავტოსერვისებისთვის. კომპანია რეგისტრირებულია ბათუმში და თანამშრომლობს ქვეყნის მასშტაბით ადგილობრივ სერვის-კომპანიებთან.</p><p>ჩვენი პროდუქტი ერთი აპლიკაციაა, რომელშიც სამი როლი არსებობს: მძღოლი, რომელიც სერვისს უკვეთავს; ვერიფიცირებული პროვაიდერი, რომელიც მას ასრულებს; და ადმინისტრირების ფენა, რომელიც ამტკიცებს ანგარიშებს, წყვეტს დავებს და ამზადებს ანგარიშგებას. პლატფორმა თავიდან ბოლომდე უზრუნველყოფს შეკვეთას, განაწილებას, თვალყურის დევნებას, გადახდასა და შეფასებას.</p></div>
+        <div class="en"><p>Londre is a mobile platform for on-demand automotive services in Georgia. Drivers use it to request roadside recovery and car washing; local service businesses use it to receive those requests and manage the work digitally.</p><p>The platform handles the whole job end to end — ordering, dispatch, live tracking, payment and rating. Nothing depends on a phone call, and nothing is agreed on the roadside.</p></div><div class="ka"><p>ლონდრე არის მობილური პლატფორმა საქართველოში მოთხოვნისამებრ ავტოსერვისებისთვის. მძღოლები მას იყენებენ ევაკუაციისა და ავტორეცხვის შესაკვეთად; ადგილობრივი სერვის-კომპანიები კი — ამ შეკვეთების მისაღებად და სამუშაოს ციფრულად სამართავად.</p><p>პლატფორმა თავიდან ბოლომდე უზრუნველყოფს სამუშაოს — შეკვეთას, განაწილებას, რეალურ დროში თვალყურის დევნებას, გადახდასა და შეფასებას. არაფერი არ არის დამოკიდებული სატელეფონო ზარზე და არაფერი თანხმდება გზის პირას.</p></div>
       </div>
       <div>
         <h2><span class="en">Why we build it</span><span class="ka">რატომ ვქმნით</span></h2>
-        <div class="en"><p>Georgia has a large and ageing vehicle fleet, and the services that keep those vehicles running are almost entirely offline. A driver with a breakdown searches social media groups for a phone number. A driver who wants a wash joins a queue and finds out the price on arrival.</p><p>We think that is a solved problem everywhere else and an unsolved one here. Our goal is a market where the price is known before the order, the provider is verified before the job, and the quality is visible after it.</p></div><div class="ka"><p>საქართველოში დიდი და შედარებით ძველი ავტოპარკია, ხოლო სერვისები, რომლებიც ამ ავტომობილებს მუშა მდგომარეობაში ინარჩუნებს, თითქმის მთლიანად ოფლაინ რეჟიმშია. მძღოლი გაფუჭებისას სოციალურ ქსელებში ეძებს ტელეფონის ნომერს. მძღოლი, რომელსაც რეცხვა სურს, დგება რიგში და ფასს ადგილზე იგებს.</p><p>ჩვენ მიგვაჩნია, რომ ეს პრობლემა სხვაგან უკვე გადაწყვეტილია, აქ კი — ჯერ არა. ჩვენი მიზანია ბაზარი, სადაც ფასი შეკვეთამდე ცნობილია, პროვაიდერი სამუშაომდე ვერიფიცირებულია, ხარისხი კი შემდეგ თვალსაჩინოა.</p></div>
+        <div class="en"><p>Roadside recovery and car washing in Georgia still run on phone calls, social media groups and walk-in queues. A driver with a breakdown searches for a number. A driver who wants a wash joins a queue and finds out the price on arrival.</p><p>Our goal is a market where the price is known before the order, the provider is verified before the job, and the quality is visible after it.</p></div><div class="ka"><p>საქართველოში ევაკუაცია და ავტორეცხვა დღემდე ტელეფონზე, სოციალურ ქსელებსა და ცოცხალ რიგზეა დამოკიდებული. მძღოლი გაფუჭებისას ნომერს ეძებს. მძღოლი, რომელსაც რეცხვა სურს, დგება რიგში და ფასს ადგილზე იგებს.</p><p>ჩვენი მიზანია ბაზარი, სადაც ფასი შეკვეთამდე ცნობილია, პროვაიდერი სამუშაომდე ვერიფიცირებულია, ხარისხი კი შემდეგ თვალსაჩინოა.</p></div>
       </div>
     </div>
   </div>
@@ -95,58 +104,60 @@
 <section class="section section-fog">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow"><span class="en">Market context</span><span class="ka">ბაზრის კონტექსტი</span></p>
-      <h2><span class="en">The gap we are addressing</span><span class="ka">რა ხარვეზს ვავსებთ</span></h2>
-      <p><span class="en">Three conditions make this the right moment for a digital automotive services platform in Georgia.</span><span class="ka">სამი გარემოება ქმნის საქართველოში ავტოსერვისების ციფრული პლატფორმისთვის სწორ მომენტს.</span></p>
+      <p class="eyebrow"><span class="en">Structure</span><span class="ka">სტრუქტურა</span></p>
+      <h2><span class="en">Three roles inside one application</span><span class="ka">სამი როლი ერთ აპლიკაციაში</span></h2>
+      <p><span class="en">Rather than shipping separate products, Londre gives each side of the transaction its own view of the same order.</span><span class="ka">ცალკეული პროდუქტების ნაცვლად, ლონდრე გარიგების თითოეულ მხარეს ერთი და იმავე შეკვეთის საკუთარ ხედვას აძლევს.</span></p>
     </div>
     <div class="grid grid-3">
-      <div class="card card-line"><h3><span class="en">A large vehicle base</span><span class="ka">დიდი ავტოპარკი</span></h3><div class="en"><p>Around 1.9 million vehicles are registered in Georgia, roughly 855,000 of them in Tbilisi. A high share of the fleet is more than ten years old, which means recurring demand for recovery and maintenance.</p></div><div class="ka"><p>საქართველოში დაახლოებით 1.9 მილიონი ავტომობილია რეგისტრირებული, აქედან დაახლოებით 855 000 — თბილისში. ავტოპარკის მნიშვნელოვანი ნაწილი ათ წელზე ძველია, რაც ევაკუაციასა და მომსახურებაზე მუდმივ მოთხოვნას ქმნის.</p></div></div>
-      <div class="card card-line"><h3><span class="en">A fragmented supply side</span><span class="ka">ფრაგმენტული მიწოდება</span></h3><div class="en"><p>Service providers are small, independent and mostly unreachable except by phone. There is no shared booking layer, no standard pricing and no portable reputation.</p></div><div class="ka"><p>სერვის-პროვაიდერები მცირე და დამოუკიდებელია, უმეტესად მხოლოდ ტელეფონით მისაწვდომი. არ არსებობს ერთიანი ჯავშნის სისტემა, სტანდარტული ფასწარმოქმნა ან გადატანადი რეპუტაცია.</p></div></div>
-      <div class="card card-line"><h3><span class="en">Digital payment is already normal</span><span class="ka">ციფრული გადახდა უკვე ჩვეულებრივია</span></h3><div class="en"><p>Card and mobile payment through Georgian banks is widely adopted. The behaviour change required of the customer is small — the missing piece is the platform itself.</p></div><div class="ka"><p>ბარათითა და მობილურით გადახდა ქართული ბანკების მეშვეობით ფართოდაა დანერგილი. მომხმარებლისგან საჭირო ქცევის ცვლილება მცირეა — აკლია სწორედ თავად პლატფორმა.</p></div></div>
+      <div class="card card-line"><h3><span class="en">The driver</span><span class="ka">მძღოლი</span></h3><div class="en"><p>Orders a service, sees the estimate before confirming, follows the job on the map and pays in the app. Past orders stay in one history.</p></div><div class="ka"><p>უკვეთავს სერვისს, დადასტურებამდე ხედავს სავარაუდო ფასს, რუკაზე ადევნებს თვალს სამუშაოს და იხდის აპლიკაციაში. წარსული შეკვეთები ერთ ისტორიაში რჩება.</p></div></div>
+      <div class="card card-line-b"><h3><span class="en">The verified provider</span><span class="ka">ვერიფიცირებული პროვაიდერი</span></h3><div class="en"><p>Receives requests, sets availability and publishes its own service list, durations and prices. Tow operators go online when they are working; car washes open real time slots.</p></div><div class="ka"><p>იღებს შეკვეთებს, აყენებს ხელმისაწვდომობას და აქვეყნებს საკუთარ სერვისების სიას, ხანგრძლივობასა და ფასებს. ევაკუატორები მუშაობისას გადადიან ონლაინ რეჟიმში; სამრეცხაოები ხსნიან რეალურ დროის სლოტებს.</p></div></div>
+      <div class="card"><h3><span class="en">The administration layer</span><span class="ka">ადმინისტრირების ფენა</span></h3><div class="en"><p>Approves accounts before they go live, resolves disputes, and keeps the reporting record for every order placed on the platform.</p></div><div class="ka"><p>ამტკიცებს ანგარიშებს გააქტიურებამდე, წყვეტს დავებს და აწარმოებს ანგარიშგების ჩანაწერს პლატფორმაზე განთავსებული ყოველი შეკვეთისთვის.</p></div></div>
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow"><span class="en">Leadership</span><span class="ka">ხელმძღვანელობა</span></p>
-      <h2><span class="en">Founders</span><span class="ka">დამფუძნებლები</span></h2>
-    </div>
-    <div class="grid grid-2">
-      <div class="card">
-        <h3>Raul Kakhadze</h3>
-        <p style="color:var(--signal-d); font-weight:500; margin-bottom:.8em;"><span class="en">Chief Executive Officer, Co-founder</span><span class="ka">აღმასრულებელი დირექტორი, თანადამფუძნებელი</span></p>
-        <div class="en"><p>Raul leads business strategy, partnerships with service providers and day-to-day operations. He is responsible for building the provider network and for the company's commercial direction in the Georgian market.</p></div><div class="ka"><p>რაული ხელმძღვანელობს ბიზნეს-სტრატეგიას, სერვის-პროვაიდერებთან პარტნიორობასა და ყოველდღიურ ოპერაციებს. მას ევალება პროვაიდერების ქსელის მშენებლობა და კომპანიის კომერციული მიმართულება ქართულ ბაზარზე.</p></div>
+    <div class="grid grid-2" style="gap:56px; align-items:start;">
+      <div>
+        <p class="eyebrow"><span class="en">Trust</span><span class="ka">ნდობა</span></p>
+        <h2><span class="en">Nobody takes an order unchecked</span><span class="ka">არავინ იღებს შეკვეთას შემოწმების გარეშე</span></h2>
+        <div class="en"><p>A service business cannot appear in the app by signing up. It submits identification, licences and vehicle documents, and the account stays inactive until our team has reviewed and approved it.</p><p>After that, every completed job carries a rating that stays attached to the business, so the record a driver sees is built from work that actually happened.</p></div><div class="ka"><p>სერვის-კომპანია აპლიკაციაში მხოლოდ რეგისტრაციით ვერ გამოჩნდება. იგი წარადგენს პირადობის, ლიცენზიისა და ავტომობილის დოკუმენტებს, ხოლო ანგარიში არააქტიური რჩება, სანამ ჩვენი გუნდი მას არ განიხილავს და დაამტკიცებს.</p><p>ამის შემდეგ ყოველი შესრულებული სამუშაო ატარებს შეფასებას, რომელიც კომპანიას რჩება — ამიტომ ჩანაწერი, რომელსაც მძღოლი ხედავს, რეალურად შესრულებული სამუშაოსგან შენდება.</p></div>
       </div>
-      <div class="card">
-        <h3>Giorgi Bolkvadze</h3>
-        <p style="color:var(--signal-d); font-weight:500; margin-bottom:.8em;"><span class="en">Chief Technology Officer, Co-founder</span><span class="ka">ტექნიკური დირექტორი, თანადამფუძნებელი</span></p>
-        <div class="en"><p>Giorgi leads product and engineering. He designed and built the Londre mobile application in Flutter for iOS and Android, together with the platform's backend architecture, real-time location tracking and administration tooling.</p></div><div class="ka"><p>გიორგი ხელმძღვანელობს პროდუქტსა და ინჟინერიას. მან დააპროექტა და შექმნა ლონდრეს მობილური აპლიკაცია Flutter-ზე iOS-სა და Android-ისთვის, ასევე პლატფორმის backend არქიტექტურა, რეალურ დროში ლოკაციის თვალყურის დევნების სისტემა და ადმინისტრირების ინსტრუმენტები.</p></div>
+      <div class="card card-line">
+        <h3><span class="en">Before an account goes live</span><span class="ka">სანამ ანგარიში გააქტიურდება</span></h3>
+        <ul class="ticks">
+          <li><span class="en">Identity and business documents submitted</span><span class="ka">წარდგენილია პირადობისა და ბიზნესის დოკუმენტები</span></li>
+          <li><span class="en">Licences and vehicle papers checked</span><span class="ka">შემოწმებულია ლიცენზიები და ავტომობილის საბუთები</span></li>
+          <li><span class="en">Reviewed and approved by our team</span><span class="ka">განხილული და დამტკიცებული ჩვენი გუნდის მიერ</span></li>
+          <li><span class="en">Service list and working hours published</span><span class="ka">გამოქვეყნებულია სერვისების სია და სამუშაო საათები</span></li>
+          <li><span class="en">Ratings recorded against the account from then on</span><span class="ka">ამის შემდეგ შეფასებები აღირიცხება ანგარიშზე</span></li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section section-fog">
+<section class="section section-dark">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow"><span class="en">Registration details</span><span class="ka">სარეგისტრაციო მონაცემები</span></p>
-      <h2><span class="en">Company information</span><span class="ka">კომპანიის ინფორმაცია</span></h2>
+      <p class="eyebrow"><span class="en">Coverage</span><span class="ka">დაფარვა</span></p>
+      <h2><span class="en">Where Londre operates</span><span class="ka">სად მოქმედებს ლონდრე</span></h2>
+      <p><span class="en">We are preparing the first launch in Batumi, with Tbilisi to follow, and we work with local service businesses in each city we open.</span><span class="ka">ვემზადებით პირველი გაშვებისთვის ბათუმში, შემდეგ კი — თბილისში, და ვთანამშრომლობთ ადგილობრივ სერვის-კომპანიებთან ყოველ ქალაქში, რომელსაც ვხსნით.</span></p>
     </div>
-    <div class="table-shell">
-      <table class="data">
-        <tbody>
-          <tr><th><span class="en">Legal entity</span><span class="ka">იურიდიული პირი</span></th><td>LONDRE AI LLC</td></tr>
-          <tr><th><span class="en">Trading name</span><span class="ka">სავაჭრო სახელი</span></th><td>Londre &middot; ლონდრე</td></tr>
-          <tr><th><span class="en">Country of registration</span><span class="ka">რეგისტრაციის ქვეყანა</span></th><td><span class="en">Georgia</span><span class="ka">საქართველო</span></td></tr>
-          <tr><th><span class="en">Registered address</span><span class="ka">იურიდიული მისამართი</span></th><td>Commercial space N7, Floor 1, N 18 Kobaladze Street,<br>Batumi 6010, Autonomous Republic of Adjara, Georgia</td></tr>
-          <tr><th><span class="en">Official email</span><span class="ka">ოფიციალური ელფოსტა</span></th><td><a href="mailto:official@londre.ge">official@londre.ge</a></td></tr>
-          <tr><th><span class="en">Website</span><span class="ka">ვებგვერდი</span></th><td><a href="https://londre.ge">londre.ge</a></td></tr>
-          <tr><th><span class="en">Principal activity</span><span class="ka">საქმიანობის ძირითადი სფერო</span></th><td><span class="en">Development and operation of a mobile platform for automotive services</span><span class="ka">ავტოსერვისების მობილური პლატფორმის შემუშავება და ოპერირება</span></td></tr>
-        </tbody>
-      </table>
+    <div class="grid grid-3">
+      <div class="card"><h3><span class="en">Batumi first</span><span class="ka">ჯერ ბათუმი</span></h3><div class="en"><p>The launch city, where the initial provider network is being built and verified.</p></div><div class="ka"><p>გაშვების ქალაქი, სადაც შენდება და მოწმდება პროვაიდერების საწყისი ქსელი.</p></div></div>
+      <div class="card"><h3><span class="en">Tbilisi next</span><span class="ka">შემდეგ თბილისი</span></h3><div class="en"><p>The largest vehicle base in the country, and the next market we open.</p></div><div class="ka"><p>ქვეყნის ყველაზე დიდი ავტოპარკი და შემდეგი ბაზარი, რომელსაც ვხსნით.</p></div></div>
+      <div class="card"><h3><span class="en">Two languages</span><span class="ka">ორი ენა</span></h3><div class="en"><p>The app and everything around it are provided in Georgian and English, with prices in Georgian Lari.</p></div><div class="ka"><p>აპლიკაცია და მასთან დაკავშირებული ყველაფერი ხელმისაწვდომია ქართულად და ინგლისურად, ფასები კი — ქართულ ლარში.</p></div></div>
     </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2><span class="en">Want to join as a provider?</span><span class="ka">გსურთ შემოგვიერთდეთ როგორც პროვაიდერი?</span></h2>
+    <div class="en"><p>Car washes, recovery operators and fleets can reach our team directly.</p></div><div class="ka"><p>სამრეცხაოებს, ევაკუატორის ოპერატორებსა და ავტოპარკებს შეუძლიათ პირდაპირ დაგვიკავშირდნენ.</p></div>
+    <a class="btn btn-primary" href="contact.html"><span class="en">Get in touch</span><span class="ka">დაგვიკავშირდით</span></a>
   </div>
 </section>
 
@@ -155,7 +166,10 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <img class="footer-logo" src="assets/logo-inverse.png" alt="Londre">
+        <picture>
+          <source srcset="assets/logo-inverse.webp" type="image/webp">
+          <img class="footer-logo" src="assets/logo-inverse.png" alt="Londre" width="115" height="36">
+        </picture>
         <address>
           <strong>LONDRE AI LLC</strong><br>
           Commercial space N7, Floor 1<br>
@@ -168,7 +182,7 @@
         <h4><span class="en">Site</span><span class="ka">საიტი</span></h4>
         <ul>
           <li><a href="index.html"><span class="en">Home</span><span class="ka">მთავარი</span></a></li>
-          <li><a href="about.html"><span class="en">Company</span><span class="ka">კომპანია</span></a></li>
+          <li><a href="about.html"><span class="en">How it works</span><span class="ka">როგორ მუშაობს</span></a></li>
           <li><a href="services.html"><span class="en">Services</span><span class="ka">სერვისები</span></a></li>
           <li><a href="app.html"><span class="en">App</span><span class="ka">აპლიკაცია</span></a></li>
           <li><a href="contact.html"><span class="en">Contact</span><span class="ka">კონტაქტი</span></a></li>

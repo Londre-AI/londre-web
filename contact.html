@@ -22,9 +22,15 @@
 <meta name="theme-color" content="#16202A">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/firago-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/firago-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>/* Latin is needed in both languages (brand, e-mail, timestamps), so it is
+   preloaded flat. The Georgian slices are only worth fetching early for a
+   Georgian visitor. Storage key and language sniff must match assets/site.js. */
+try{var _l=localStorage.getItem('londre-lang')||((navigator.language||'').toLowerCase().indexOf('ka')===0?'ka':'en');
+if(_l==='ka'){['400','600'].forEach(function(w){var k=document.createElement('link');k.rel='preload';k.as='font';
+k.type='font/woff2';k.crossOrigin='anonymous';k.href='assets/fonts/firago-'+w+'-georgian.woff2';
+document.head.appendChild(k);});}}catch(e){}</script>
 <link rel="stylesheet" href="assets/styles.css">
 <script type="application/ld+json">
 {
@@ -51,12 +57,15 @@
 <header class="site-header">
   <div class="wrap nav">
     <a class="brand" href="index.html">
-      <img src="assets/logo.png" alt="Londre">
+      <picture>
+        <source srcset="assets/logo.webp" type="image/webp">
+        <img src="assets/logo.png" alt="Londre" width="115" height="36">
+      </picture>
     </a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">&#9776;</button>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu"><span></span></button>
     <nav class="nav-links" aria-label="Main">
         <a href="index.html"><span class="en">Home</span><span class="ka">მთავარი</span></a>
-        <a href="about.html"><span class="en">Company</span><span class="ka">კომპანია</span></a>
+        <a href="about.html"><span class="en">How it works</span><span class="ka">როგორ მუშაობს</span></a>
         <a href="services.html"><span class="en">Services</span><span class="ka">სერვისები</span></a>
         <a href="app.html"><span class="en">App</span><span class="ka">აპლიკაცია</span></a>
         <a href="contact.html" aria-current="page"><span class="en">Contact</span><span class="ka">კონტაქტი</span></a>
@@ -159,7 +168,10 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <img class="footer-logo" src="assets/logo-inverse.png" alt="Londre">
+        <picture>
+          <source srcset="assets/logo-inverse.webp" type="image/webp">
+          <img class="footer-logo" src="assets/logo-inverse.png" alt="Londre" width="115" height="36">
+        </picture>
         <address>
           <strong>LONDRE AI LLC</strong><br>
           Commercial space N7, Floor 1<br>
@@ -172,7 +184,7 @@
         <h4><span class="en">Site</span><span class="ka">საიტი</span></h4>
         <ul>
           <li><a href="index.html"><span class="en">Home</span><span class="ka">მთავარი</span></a></li>
-          <li><a href="about.html"><span class="en">Company</span><span class="ka">კომპანია</span></a></li>
+          <li><a href="about.html"><span class="en">How it works</span><span class="ka">როგორ მუშაობს</span></a></li>
           <li><a href="services.html"><span class="en">Services</span><span class="ka">სერვისები</span></a></li>
           <li><a href="app.html"><span class="en">App</span><span class="ka">აპლიკაცია</span></a></li>
           <li><a href="contact.html"><span class="en">Contact</span><span class="ka">კონტაქტი</span></a></li>
