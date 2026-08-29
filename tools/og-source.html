@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'FiraGO';font-weight:400;src:url('fonts/firago-400-latin.woff2') format('woff2');}
+@font-face{font-family:'FiraGO';font-weight:500;src:url('fonts/firago-500-latin.woff2') format('woff2');}
+@font-face{font-family:'FiraGO';font-weight:600;src:url('fonts/firago-600-latin.woff2') format('woff2');}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1200px;height:630px;overflow:hidden;font-family:'FiraGO',sans-serif;
+  background:
+    radial-gradient(ellipse 55% 70% at 88% 0%, rgba(242,111,31,.20), transparent 62%),
+    radial-gradient(ellipse 50% 60% at 0% 100%, rgba(0,120,191,.16), transparent 65%),
+    linear-gradient(160deg,#1F2C39 0%,#16202A 62%);
+  position:relative;color:#EDF1F5}
+/* same lane-marking texture as .banner in styles.css */
+body::before{content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(116deg, rgba(255,255,255,.085) 0 2px, transparent 2px 78px);
+  -webkit-mask-image:repeating-linear-gradient(26deg,#000 0 66px, transparent 66px 116px);}
+.in{position:relative;z-index:1;padding:64px 72px;height:100%;display:flex;flex-direction:column}
+.logo{height:44px;width:auto;display:block;align-self:flex-start}
+h1{margin-top:auto;font-size:66px;line-height:1.06;letter-spacing:-.018em;font-weight:600;max-width:19ch}
+.rule{width:78px;height:4px;border-radius:4px;background:#F26F1F;margin:34px 0 26px}
+.sub{font-size:25px;color:#C3CCD5;font-weight:400}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;
+  font-size:19px;color:#9AA6B3}
+.dom{color:#F26F1F;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:18px}
+</style>
+</head>
+<body>
+<div class="in">
+  <img class="logo" src="logo-inverse.png" alt="">
+  <h1>Roadside help and car care, ordered from one app.</h1>
+  <div class="rule"></div>
+  <p class="sub">Tow truck recovery and car wash booking across Georgia.</p>
+  <div class="foot">
+    <span class="dom">londre.ge</span>
+    <span>LONDRE AI LLC &middot; Batumi, Georgia</span>
+  </div>
+</div>
+</body>
+</html>
