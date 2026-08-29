@@ -1,144 +1,123 @@
-# londre.ge — setup and deployment
+# Londre — Website
 
-Static site. No build step; upload the files as they are.
+The public website for **Londre**, an on-demand automotive services platform
+operating in Georgia. Drivers use the Londre mobile app to find and order car
+washing and roadside recovery; verified service businesses use the same app to
+receive and fulfil those orders.
 
-```
-index.html      Home
-about.html      How it works (platform, roles, verification, coverage)
-services.html   Services
-app.html        Mobile application
-contact.html    Contact + official company details
-privacy.html    Privacy Policy
-terms.html      Terms of Service
-404.html        Error page
-robots.txt, sitemap.xml
-assets/         logo, favicon, styles.css, site.js
-assets/fonts/   FiraGO woff2 (subset, self-hosted)
-tools/          Font build script + OG image source — DO NOT UPLOAD
-_fontsrc/       Font build working directory — DO NOT UPLOAD (gitignored)
-```
-
-> Do not include the `tools/` and `_fontsrc/` directories when uploading. They
-> serve no purpose on the site itself; they exist only to regenerate assets.
+Production: **[londre.ge](https://londre.ge)**
 
 ---
 
-## 1. Deployment (fastest: Cloudflare Pages)
+## Overview
 
-1. `dash.cloudflare.com` → Workers & Pages → Create → Pages → **Upload assets**
-2. Drag and drop this folder (excluding `tools/` and `_fontsrc/`)
-3. Deploy → you get a temporary `*.pages.dev` address
-4. Custom domains → add `londre.ge` and `www.londre.ge`
-5. Update the DNS records as Cloudflare instructs
-6. SSL is provisioned automatically
+A static, dependency-free marketing and compliance site. Eight pages, fully
+bilingual in English and Georgian, built to load fast on mobile networks and to
+stand as the company's verifiable public presence.
 
-**Netlify alternative:** `app.netlify.com/drop` → drag the folder → Domain settings → add `londre.ge`.
+There is no build step, no framework and no package manager. The HTML files are
+the source of truth; deployment is a file copy.
 
-**On your own server:** copy the files to the web root (`/var/www/londre.ge`) and obtain a certificate with Let's Encrypt.
+## Highlights
 
-## 2. Post-deployment checks
+- **Bilingual by construction** — every string ships in English and Georgian, switched client-side with no page reload and no duplicated pages.
+- **Zero third-party requests** — no CDN, no analytics, no Google Fonts. Nothing about a visitor leaves the origin.
+- **Self-hosted, script-split typography** — FiraGO renders Latin and Georgian in one type family, subset by `unicode-range` so an English visitor never downloads Georgian glyphs.
+- **Accessible** — skip link, semantic landmarks, keyboard-navigable menu, and a motion layer gated behind `prefers-reduced-motion`.
+- **Print-ready** — a dedicated print stylesheet strips navigation and interactive chrome, which matters for the legal pages.
+- **Structured data** — JSON-LD `Organization` on every page, so the legal entity is machine-readable.
 
-- [ ] `https://londre.ge` opens in a private window, without a VPN
-- [ ] `https://www.londre.ge` works too (a redirect is sufficient)
-- [ ] The SSL certificate is valid and the browser shows no warning
-- [ ] The EN/GE switch works
-- [ ] The menu opens on mobile
-- [ ] `official@londre.ge` genuinely works and receives mail
+## Tech stack
 
-> That last item matters: Apple sometimes writes to this address. Set the
-> mailbox up if it is not active.
-
----
-
-## 3. Apple Developer — reapplication
-
-There was a single reason for the rejection: the site given in the application
-did not have enough content. This site meets those requirements:
-
-| What Apple asked for | Where it is on the site |
+| | |
 |---|---|
-| A public, working site | All pages are static, no login |
-| Domain matches the company | `londre.ge` ↔ LONDRE AI LLC |
-| Not a social media link | Its own domain |
-| Not "minimal content" | 8 pages, two languages |
-| Not a registrar parking page | Real content |
-| Legal identity visible | Footer + contact.html + about.html |
+| Markup | Hand-authored HTML5, one file per page |
+| Styling | Modern CSS — custom properties, grid, `clamp()` fluid type. No framework. |
+| Behaviour | Vanilla JavaScript (~277 lines), no dependencies |
+| Typography | FiraGO (SIL OFL), self-hosted `woff2`, weights 400/500/600 |
+| Structured data | JSON-LD (`Organization`, `PostalAddress`) |
+| Tooling | `python3` — only to rebuild font subsets, never at deploy time |
 
-**Order of operations:**
+Total weight of CSS, JavaScript and all six font files is **≈128 KB**.
 
-1. Deploy the site and **wait 24 hours** (so DNS + SSL settle fully)
-2. Verify that the company name on the D-U-N-S record is character-for-character identical to **LONDRE AI LLC**
-3. Apple Developer → Enrollment → reapply
-4. Enter `https://londre.ge` in the Website field
-5. The company name and address in the application must be character-for-character identical to `contact.html`
+## Project structure
 
----
-
-## 4. Updating content
-
-Directly in the HTML. Every piece of text exists as two blocks:
-```html
-<div class="en">English</div><div class="ka">ქართული</div>
 ```
-Edit only the relevant block. The `html[lang]` selector decides which one is
-shown.
+index.html         Home
+about.html         How it works — platform, roles, verification, coverage
+services.html      Services
+app.html           Mobile application
+contact.html       Contact and official company details
+privacy.html       Privacy Policy
+terms.html         Terms of Service
+404.html           Error page
 
-> Older versions had a `build.py`; it is gone. The HTML files themselves are the
-> single source of truth. When you update one language, don't forget to update
-> the other.
+assets/
+  styles.css       All styling
+  site.js          Language switching, navigation, header state, scroll reveal
+  fonts/           FiraGO woff2 subsets, split Latin / Georgian
+  logo·favicon·og  Brand and social-preview imagery
 
-### About the typeface
+tools/             Font build script and OG image source — not deployed
+docs/              Internal deployment and operations runbook
+robots.txt, sitemap.xml
+```
 
-The fonts are **self-hosted** (`assets/fonts/`), with no dependency on Google
-Fonts. FiraGO carries the Latin and Georgian alphabets in one family — the
-letterforms do not change when the language does. The files are split in two by
-`unicode-range`: an English visitor never downloads the Georgian glyphs.
+## Local development
 
-If you need a new weight, or the character set grows:
+No dependencies and no build. Serve the directory over HTTP — opening the files
+via `file://` will break the font loading and language switching.
+
+```bash
+python3 -m http.server 8000
+```
+
+Then visit **http://localhost:8000**.
+
+## Editing content
+
+Every piece of copy exists as two sibling blocks. The `lang` attribute on
+`<html>` decides which one is displayed:
+
+```html
+<div class="en">English copy</div>
+<div class="ka">ქართული ტექსტი</div>
+```
+
+Edit only the relevant block — **and update both languages in the same change.**
+A page where the two drift apart will silently show stale copy to half the
+audience.
+
+### Typography
+
+Fonts are self-hosted and subset. If a new weight is needed, or the character
+set grows, rebuild them and commit the output:
+
 ```bash
 ./tools/build-fonts.sh
 ```
-The script downloads the fonts, subsets them, and writes into `assets/fonts/`.
-Commit the output. It only needs `python3`; it sets up its own venv.
 
-> If you add a symbol to the text that FiraGO does not contain (an arrow or an
-> icon character, say), the browser falls back to another font and it looks
-> inconsistent. In such cases either add the character to the `LATIN` range in
-> `tools/build-fonts.sh`, or — if it is an icon — draw it in CSS, the way
-> `.nav-toggle` is done in `styles.css`.
+If you introduce a character FiraGO does not carry — an arrow or icon glyph,
+say — the browser falls back to another face and the text looks inconsistent.
+Either extend the range in `tools/build-fonts.sh`, or draw the icon in CSS.
+
+## Company details
+
+The legal entity name and address appear in three deliberately canonical
+places: the footer of every page, the details table in `contact.html`, and the
+JSON-LD `Organization` block. These are relied upon for external verification
+and must be kept identical to one another — see
+[`docs/operations.md`](docs/operations.md) before changing them.
+
+## Deployment
+
+The site is static, so any host that serves files will do. `tools/` and the
+gitignored `_fontsrc/` should be excluded from what gets served.
+
+Full procedure, post-deployment checks and operational notes:
+[`docs/operations.md`](docs/operations.md).
 
 ---
 
-## 5. Possible additions later
-
-- App Store / Google Play badges (in `app.html`, once the app is published)
-- Phone number — in `contact.html` and the footer
-- Real application screenshots (`app.html`)
-- Google Maps embed (`contact.html`)
-
-If you need to change the OG image (`assets/og.png`), the source is
-`tools/og-source.html` — edit it, then take a 1200×630 headless screenshot.
-
----
-
-## Notes
-
-- The Privacy Policy and Terms of Service were written to match what the app actually collects (phone/SMS OTP, location, order records, payment, provider documents). A privacy policy is already mandatory for an App Store submission — you can give `https://londre.ge/privacy.html` as that address.
-- Both should be reviewed by a lawyer; they need to be finalised under Georgian law. These texts are drafts.
-- The fonts are self-hosted (FiraGO, SIL OFL). No request goes to Google Fonts — this was chosen for both privacy and speed.
-
-### Where the legal identity lives (take care when changing it)
-
-Apple's verification depends on the legal entity name being visible on the site.
-The identity information is deliberately kept in **one canonical set of places**
-rather than scattered across pages:
-
-| Place | What it holds |
-|---|---|
-| The footer of every page | LONDRE AI LLC + full address |
-| The details table in `contact.html` | Legal entity, legal form, jurisdiction, address, email |
-| The JSON-LD `Organization` on every page | The same information, machine-readable |
-
-Do not break these three. The company name and address you give in the
-application must be character-for-character identical to the table in
-`contact.html` — and must match the D-U-N-S record too.
+© LONDRE AI LLC. All rights reserved.
+The FiraGO typeface is used under the SIL Open Font License 1.1.
