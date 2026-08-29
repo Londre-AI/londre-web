@@ -1,137 +1,144 @@
-# londre.ge — kurulum ve yayına alma
+# londre.ge — setup and deployment
 
-Statik site. Build gerekmez, dosyaları olduğu gibi yükle.
+Static site. No build step; upload the files as they are.
 
 ```
-index.html      Ana sayfa
-about.html      Nasıl çalışır (platform, roller, doğrulama, kapsam)
-services.html   Hizmetler
-app.html        Mobil uygulama
-contact.html    İletişim + resmi rekvizitler
-privacy.html    Gizlilik Politikası
-terms.html      Kullanım Şartları
-404.html        Hata sayfası
+index.html      Home
+about.html      How it works (platform, roles, verification, coverage)
+services.html   Services
+app.html        Mobile application
+contact.html    Contact + official company details
+privacy.html    Privacy Policy
+terms.html      Terms of Service
+404.html        Error page
 robots.txt, sitemap.xml
 assets/         logo, favicon, styles.css, site.js
-assets/fonts/   FiraGO woff2 (subset edilmiş, self-hosted)
-tools/          Font build script + OG görsel kaynağı — YÜKLEME
-_fontsrc/       Font build çalışma klasörü — YÜKLEME (gitignore'da)
+assets/fonts/   FiraGO woff2 (subset, self-hosted)
+tools/          Font build script + OG image source — DO NOT UPLOAD
+_fontsrc/       Font build working directory — DO NOT UPLOAD (gitignored)
 ```
 
-> Yükleme sırasında `tools/` ve `_fontsrc/` klasörlerini dahil etme. Site
-> tarafında hiçbir işe yaramazlar; sadece varlıkları yeniden üretmek için.
+> Do not include the `tools/` and `_fontsrc/` directories when uploading. They
+> serve no purpose on the site itself; they exist only to regenerate assets.
 
 ---
 
-## 1. Yayına alma (en hızlısı: Cloudflare Pages)
+## 1. Deployment (fastest: Cloudflare Pages)
 
 1. `dash.cloudflare.com` → Workers & Pages → Create → Pages → **Upload assets**
-2. Bu klasörü (`tools/` ve `_fontsrc/` hariç) sürükle bırak
-3. Deploy → geçici bir `*.pages.dev` adresi verir
-4. Custom domains → `londre.ge` ve `www.londre.ge` ekle
-5. DNS kayıtlarını Cloudflare gösterdiği gibi güncelle
-6. SSL otomatik gelir
+2. Drag and drop this folder (excluding `tools/` and `_fontsrc/`)
+3. Deploy → you get a temporary `*.pages.dev` address
+4. Custom domains → add `londre.ge` and `www.londre.ge`
+5. Update the DNS records as Cloudflare instructs
+6. SSL is provisioned automatically
 
-**Netlify alternatifi:** `app.netlify.com/drop` → klasörü sürükle → Domain settings → `londre.ge` ekle.
+**Netlify alternative:** `app.netlify.com/drop` → drag the folder → Domain settings → add `londre.ge`.
 
-**Kendi sunucun varsa:** dosyaları web root'a (`/var/www/londre.ge`) kopyala, Let's Encrypt ile sertifika al.
+**On your own server:** copy the files to the web root (`/var/www/londre.ge`) and obtain a certificate with Let's Encrypt.
 
-## 2. Yayından sonra kontrol et
+## 2. Post-deployment checks
 
-- [ ] `https://londre.ge` gizli sekmede, VPN'siz açılıyor
-- [ ] `https://www.londre.ge` de çalışıyor (yönlendirme yeterli)
-- [ ] SSL sertifikası geçerli, tarayıcı uyarı vermiyor
-- [ ] EN/GE geçişi çalışıyor
-- [ ] Mobilde menü açılıyor
-- [ ] `official@londre.ge` gerçekten çalışıyor ve mail alıyor
+- [ ] `https://londre.ge` opens in a private window, without a VPN
+- [ ] `https://www.londre.ge` works too (a redirect is sufficient)
+- [ ] The SSL certificate is valid and the browser shows no warning
+- [ ] The EN/GE switch works
+- [ ] The menu opens on mobile
+- [ ] `official@londre.ge` genuinely works and receives mail
 
-> Son madde önemli: Apple bazen bu adrese yazıyor. Mailbox aktif değilse ayarla.
+> That last item matters: Apple sometimes writes to this address. Set the
+> mailbox up if it is not active.
 
 ---
 
-## 3. Apple Developer — yeniden başvuru
+## 3. Apple Developer — reapplication
 
-Reddedilme sebebi tek şeydi: başvuruda verilen sitede yeterli içerik yoktu. Bu site şu gereklilikleri karşılıyor:
+There was a single reason for the rejection: the site given in the application
+did not have enough content. This site meets those requirements:
 
-| Apple'ın istediği | Sitede nerede |
+| What Apple asked for | Where it is on the site |
 |---|---|
-| Kamuya açık, çalışan site | Tüm sayfalar statik, login yok |
-| Domain şirketle eşleşiyor | `londre.ge` ↔ LONDRE AI LLC |
-| Sosyal medya linki değil | Kendi domain'i |
-| "Minimal content" değil | 8 sayfa, iki dil |
-| Registrar park sayfası değil | Gerçek içerik |
-| Yasal kimlik görünür | Footer + contact.html + about.html |
+| A public, working site | All pages are static, no login |
+| Domain matches the company | `londre.ge` ↔ LONDRE AI LLC |
+| Not a social media link | Its own domain |
+| Not "minimal content" | 8 pages, two languages |
+| Not a registrar parking page | Real content |
+| Legal identity visible | Footer + contact.html + about.html |
 
-**Sıra:**
+**Order of operations:**
 
-1. Siteyi yayına al, **24 saat bekle** (DNS + SSL tam otursun)
-2. D-U-N-S kaydındaki şirket adının **LONDRE AI LLC** ile birebir aynı olduğunu doğrula
-3. Apple Developer → Enrollment → yeniden başvur
-4. Website alanına `https://londre.ge` yaz
-5. Başvurudaki şirket adı ve adres, sitedeki `contact.html` ile birebir aynı olsun
+1. Deploy the site and **wait 24 hours** (so DNS + SSL settle fully)
+2. Verify that the company name on the D-U-N-S record is character-for-character identical to **LONDRE AI LLC**
+3. Apple Developer → Enrollment → reapply
+4. Enter `https://londre.ge` in the Website field
+5. The company name and address in the application must be character-for-character identical to `contact.html`
 
 ---
 
-## 4. İçerik güncelleme
+## 4. Updating content
 
-Doğrudan HTML üzerinden. Her metin iki blok halinde:
+Directly in the HTML. Every piece of text exists as two blocks:
 ```html
-<div class="en">İngilizce</div><div class="ka">ქართული</div>
+<div class="en">English</div><div class="ka">ქართული</div>
 ```
-Sadece ilgili bloğu düzenle. `html[lang]` seçicisi hangisinin görüneceğine karar veriyor.
+Edit only the relevant block. The `html[lang]` selector decides which one is
+shown.
 
-> Eski sürümlerde bir `build.py` vardı; artık yok. Tek kaynak HTML dosyalarının
-> kendisi. İki dilden birini güncellerken diğerini de güncellemeyi unutma.
+> Older versions had a `build.py`; it is gone. The HTML files themselves are the
+> single source of truth. When you update one language, don't forget to update
+> the other.
 
-### Yazı tipi hakkında
+### About the typeface
 
-Fontlar **self-hosted** (`assets/fonts/`), Google Fonts'a bağımlılık yok.
-FiraGO, Latin ve Gürcü alfabesini tek ailede taşıyor — dil değişince yazı
-karakteri değişmiyor. Dosyalar `unicode-range` ile ikiye bölünmüş: İngilizce
-ziyaretçi Gürcüce glifleri hiç indirmiyor.
+The fonts are **self-hosted** (`assets/fonts/`), with no dependency on Google
+Fonts. FiraGO carries the Latin and Georgian alphabets in one family — the
+letterforms do not change when the language does. The files are split in two by
+`unicode-range`: an English visitor never downloads the Georgian glyphs.
 
-Yeni bir ağırlık gerekirse veya karakter seti genişlerse:
+If you need a new weight, or the character set grows:
 ```bash
 ./tools/build-fonts.sh
 ```
-Script fontları indirir, subset eder, `assets/fonts/` içine yazar. Çıktıyı
-commit'le. Sadece `python3` gerekiyor; venv'i kendi kuruyor.
+The script downloads the fonts, subsets them, and writes into `assets/fonts/`.
+Commit the output. It only needs `python3`; it sets up its own venv.
 
-> Metne FiraGO'da olmayan bir sembol eklersen (örn. bir ok veya ikon karakteri)
-> tarayıcı yedek fonta düşer ve tutarsız görünür. Böyle durumlarda ya karakteri
-> `tools/build-fonts.sh` içindeki `LATIN` aralığına ekle, ya da — ikonsa —
-> `styles.css`'teki `.nav-toggle` gibi CSS ile çiz.
-
----
-
-## 5. Sonra eklenebilecekler
-
-- App Store / Google Play rozetleri (uygulama yayınlandığında `app.html`)
-- Telefon numarası — `contact.html` ve footer'a
-- Gerçek uygulama ekran görüntüleri (`app.html`)
-- Google Maps gömme (`contact.html`)
-
-OG görselini (`assets/og.png`) değiştirmen gerekirse kaynağı
-`tools/og-source.html` — düzenle, sonra 1200×630 headless screenshot al.
+> If you add a symbol to the text that FiraGO does not contain (an arrow or an
+> icon character, say), the browser falls back to another font and it looks
+> inconsistent. In such cases either add the character to the `LATIN` range in
+> `tools/build-fonts.sh`, or — if it is an icon — draw it in CSS, the way
+> `.nav-toggle` is done in `styles.css`.
 
 ---
 
-## Notlar
+## 5. Possible additions later
 
-- Gizlilik Politikası ve Kullanım Şartları, uygulamanın gerçekte topladığı verilere göre yazıldı (telefon/SMS OTP, konum, sipariş kayıtları, ödeme, sağlayıcı belgeleri). App Store başvurusunda gizlilik politikası zaten zorunlu — `https://londre.ge/privacy.html` adresini oraya verebilirsin.
-- İkisi de bir avukata okutulmalı; Gürcistan mevzuatına göre son hâlini vermek gerekir. Bu metinler taslak niteliğinde.
-- Yazı tipleri self-hosted (FiraGO, SIL OFL). Google Fonts'a hiçbir istek gitmiyor — bu hem gizlilik hem hız açısından tercih edildi.
+- App Store / Google Play badges (in `app.html`, once the app is published)
+- Phone number — in `contact.html` and the footer
+- Real application screenshots (`app.html`)
+- Google Maps embed (`contact.html`)
 
-### Yasal kimlik nerede duruyor (değiştirirken dikkat)
+If you need to change the OG image (`assets/og.png`), the source is
+`tools/og-source.html` — edit it, then take a 1200×630 headless screenshot.
 
-Apple'ın doğrulaması sitede tüzel kişi adının görünmesine bağlı. Kimlik bilgisi
-bilinçli olarak **tek kanonik yerde** tutuluyor, sayfalara dağıtılmadı:
+---
 
-| Yer | Ne var |
+## Notes
+
+- The Privacy Policy and Terms of Service were written to match what the app actually collects (phone/SMS OTP, location, order records, payment, provider documents). A privacy policy is already mandatory for an App Store submission — you can give `https://londre.ge/privacy.html` as that address.
+- Both should be reviewed by a lawyer; they need to be finalised under Georgian law. These texts are drafts.
+- The fonts are self-hosted (FiraGO, SIL OFL). No request goes to Google Fonts — this was chosen for both privacy and speed.
+
+### Where the legal identity lives (take care when changing it)
+
+Apple's verification depends on the legal entity name being visible on the site.
+The identity information is deliberately kept in **one canonical set of places**
+rather than scattered across pages:
+
+| Place | What it holds |
 |---|---|
-| Her sayfanın footer'ı | LONDRE AI LLC + tam adres |
-| `contact.html` künye tablosu | Tüzel kişi, hukuki form, yargı yetkisi, adres, e-posta |
-| Her sayfada JSON-LD `Organization` | Makine tarafından okunabilir aynı bilgi |
+| The footer of every page | LONDRE AI LLC + full address |
+| The details table in `contact.html` | Legal entity, legal form, jurisdiction, address, email |
+| The JSON-LD `Organization` on every page | The same information, machine-readable |
 
-Bu üçünü bozma. Başvuruda verdiğin şirket adı ve adres, `contact.html`'deki
-tablo ile birebir aynı olmalı — D-U-N-S kaydıyla da eşleşmeli.
+Do not break these three. The company name and address you give in the
+application must be character-for-character identical to the table in
+`contact.html` — and must match the D-U-N-S record too.
