@@ -11,7 +11,7 @@ Production: **[londre.ge](https://londre.ge)**
 
 ## Overview
 
-A static, dependency-free marketing and compliance site. Eight pages, fully
+A static, dependency-free marketing and compliance site. Nine pages, fully
 bilingual in English and Georgian, built to load fast on mobile networks and to
 stand as the company's verifiable public presence.
 
@@ -44,12 +44,13 @@ Total weight of CSS, JavaScript and all six font files is **≈128 KB**.
 
 ```
 index.html         Home
-about.html         How it works — platform, roles, verification, coverage
-services.html      Services
+about.html         About us — company, platform, roles, verification, coverage
+services.html      Services and prices (GEL)
 app.html           Mobile application
 contact.html       Contact and official company details
 privacy.html       Privacy Policy
 terms.html         Terms of Service
+refund.html        Delivery, cancellation and refund policy
 404.html           Error page
 
 assets/
