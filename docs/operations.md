@@ -8,12 +8,13 @@ Static site. No build step; upload the files as they are.
 
 ```
 index.html      Home
-about.html      How it works (platform, roles, verification, coverage)
-services.html   Services
+about.html      About us (company, platform, roles, verification, coverage)
+services.html   Services and prices (GEL)
 app.html        Mobile application
 contact.html    Contact + official company details
 privacy.html    Privacy Policy
 terms.html      Terms of Service
+refund.html     Delivery, cancellation and refund policy
 404.html        Error page
 robots.txt, sitemap.xml
 assets/         logo, favicon, styles.css, site.js
@@ -64,7 +65,7 @@ did not have enough content. This site meets those requirements:
 | A public, working site | All pages are static, no login |
 | Domain matches the company | `londre.ge` ↔ LONDRE AI LLC |
 | Not a social media link | Its own domain |
-| Not "minimal content" | 8 pages, two languages |
+| Not "minimal content" | 9 pages, two languages |
 | Not a registrar parking page | Real content |
 | Legal identity visible | Footer + contact.html + about.html |
 
@@ -78,16 +79,54 @@ did not have enough content. This site meets those requirements:
 
 ---
 
-## 4. Updating content and fonts
+## 4. Bank of Georgia — online payment requirements
+
+Before it issues payment credentials, Bank of Georgia checks that the site
+clearly shows the following. Each one has a fixed home:
+
+| What the bank asks for | Where it is on the site |
+|---|---|
+| About the company | `about.html` (nav: About us) |
+| Phone, email and address | `contact.html`, the footer of every page, JSON-LD |
+| Description of the services | `services.html` |
+| Prices, amount and currency | `services.html#prices` — tables in GEL |
+| Delivery, return, cancellation and refund policy | `refund.html` (+ summary in `terms.html` §4–6) |
+| Privacy policy | `privacy.html` |
+| Other terms of use | `terms.html` |
+
+**The business model the site states** (agreed 2026-10-26): a tow is vehicle
+transport only, at a fixed tariff; a car wash request goes out without a price
+and each car wash offers its own; the customer pays in full, by card, before
+the service; cash is not accepted. So the site publishes the tow tariff but no
+car wash prices.
+
+The tow tariff and the cancellation fees are copied from the app's server
+config (`app_config/pricing` and `app_config/fees`, defaults in
+`londre-flutter/functions/src/config.ts` and `pricing.ts`). They are not read
+live. When a value changes there, change it here in the same step:
+`services.html#prices`, `refund.html` §4, `terms.html` §6 — otherwise the site
+and the app charge different amounts.
+
+The app does not yet work this way everywhere: car washes are still charged a
+fixed catalogue price, and payment is a card hold captured at completion
+rather than a full prepayment. Until the app follows the model above, the site
+describes the agreed model, not the current build.
+
+The phone number (+995 597 98 01 88) appears in the same places as the email
+address: the footer of every page, `contact.html`, the policies and JSON-LD.
+Change all of them together: `grep -rn '597980188\|597 98 01 88' *.html`.
+
+---
+
+## 5. Updating content and fonts
 
 Covered in the [README](../README.md#editing-content) — the bilingual block
 convention and the font rebuild script. Not duplicated here, so the two cannot
 drift apart.
 
-## 5. Possible additions later
+## 6. Possible additions later
 
 - App Store / Google Play badges (in `app.html`, once the app is published)
-- Phone number — in `contact.html` and the footer
 - Real application screenshots (`app.html`)
 - Google Maps embed (`contact.html`)
 
